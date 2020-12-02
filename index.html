@@ -1,22 +1,24 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Word Finder</title>
     <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
-<table id="board" border="1px solid" cellspacing="0"></table>
+<form ></form>
+<div id="count">Điểm : </div>
+<div><table id="board" border="1px solid" cellspacing="0"></table></div>
 <script>
     const MAX_ROW = 10;
     const MAX_COL = 10;
     let board = document.getElementById("board");
     let currentStr = [];
-    let wordFound =[];
+    let wordFound = [];
+    let cellResetColor = [];
     let charLibrary = 'lessonadab:taskaetile:etbipeocda:lnejpdkesr:egeulvipzo:vmnceisnap:iasentsqui:sthatolast:ihyoupfish:ongodergex'
     let res = charLibrary.split("");
-    let correctWords = ['less', 'lesson', 'dab', 'bad', 'task', 'sen', 'sent', 'vip', 'sin', 'last', 'snap', 'you', 'fish', ' ten', 'net', 'apple', 'been', 'bear', 'tab', ' kiss', 'top', 'lab', 'ask', 'goder', 'that', 'sex', 'man','need']
-
+    let correctWords = ['less', 'lesson', 'dab', 'bad', 'task', 'sen', 'sent', 'vip', 'sin', 'last', 'snap', 'you', 'fish', ' ten', 'net', 'apple', 'been', 'bear', 'tab', ' kiss', 'top', 'lab', 'ask', 'goder', 'that', 'sex', 'man', 'need', 'nato']
 
     function readLibrary(arr) {
         let arrSplitLine = arr.split(':');
@@ -52,12 +54,16 @@
         currentStr.push(content);
         let word = currentStr.join('');
         console.log(word)
-        if(checkCorrectWord(word)){
+        addCellResetColor(cell.id)
+        if (checkCorrectWord(word)) {
             addCorrectWord(word);
-            resetCellColor(cell);
+            document.getElementById('count').innerText = "Điểm: " + wordFound.length;
+            setTimeout(resetCellColor, 500);
             currentStr = [];
+        } else if (currentStr.length == 6) {
+            currentStr = [];
+            wrongWord();
         }
-
     }
 
     function checkCorrectWord(str) {
@@ -69,14 +75,27 @@
     }
 
     function addCorrectWord(word) {
-        // cho vào mảng các từ đã tìm thấy
-        //push vào mảng
-
+        wordFound.push(word);
     }
-    function resetCellColor(cell) {
-        cell.style.backgroundColor = '#ffffff';
 
+    function resetCellColor() {
+        for (let cell of cellResetColor) {
+            document.getElementById(cell).style.backgroundColor = '#ffffff';
+        }
+        cellResetColor = [];
     }
+
+    function addCellResetColor(cell) {
+        cellResetColor.push(cell);
+    }
+
+    function wrongWord() {
+        for (let cell of cellResetColor) {
+            document.getElementById(cell).style.backgroundColor = '#ff0000';
+        }
+        setTimeout(resetCellColor, 300);
+    }
+
 
 </script>
 </body>
